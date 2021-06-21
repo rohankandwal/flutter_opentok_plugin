@@ -3,7 +3,18 @@ import 'package:flutter_opentok/flutter_opentok.dart';
 import 'package:flutter_opentok_example/video_session.dart';
 import 'package:flutter_opentok_example/settings.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(MainApp());
+
+class MainApp extends StatelessWidget {
+  const MainApp({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: MyApp(),
+    );
+  }
+}
 
 class MyApp extends StatefulWidget {
   @override
@@ -124,7 +135,9 @@ class _MyAppState extends State<MyApp> {
     List<Widget> views = _getRenderViews();
     if (views.isNotEmpty) {
       return Container (
-        child: Expanded(child: views[0]),
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        /*child: Expanded*/child: views[0],
       );
     }
 
@@ -226,15 +239,17 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-          appBar: AppBar(
-            title: const Text('OpenTok SDK'),
-          ),
-          backgroundColor: Colors.black,
-          body: Center(
-              child: Stack(
-            children: <Widget>[_viewRows(), _panel(), _toolbar()],
-          ))),
+      home: SafeArea(
+        child: Scaffold(
+            appBar: AppBar(
+              title: const Text('OpenTok SDK'),
+            ),
+            backgroundColor: Colors.black,
+            body: Center(
+                child: Stack(
+              children: <Widget>[_viewRows(), _panel(), _toolbar()],
+            ))),
+      ),
     );
   }
 }

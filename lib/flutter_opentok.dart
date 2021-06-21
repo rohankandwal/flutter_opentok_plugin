@@ -28,25 +28,25 @@ class OTFlutter {
 
   // Core Events
   /// Triggered before creating OpenTok session.
-  static VoidCallback onWillConnect;
+  static late VoidCallback onWillConnect;
 
   /// Occurs when the client connects to the OpenTok session.
-  static VoidCallback onSessionConnect;
+  static late VoidCallback onSessionConnect;
 
   /// Occurs when the client disconnects from the OpenTok session.
-  static VoidCallback onSessionDisconnect;
+  static late VoidCallback onSessionDisconnect;
 
   /// Occurs when the subscriber video is added to renderer.
-  static VoidCallback onReceiveVideo;
+  static late VoidCallback onReceiveVideo;
 
   /// Occurs when subscriber stream has been created.
-  static VoidCallback onCreateStream;
+  static late VoidCallback onCreateStream;
 
   /// Occurs when subscriber stream has been dropped.
-  static VoidCallback onDroppedStream;
+  static late VoidCallback onDroppedStream;
 
   /// Occurs when publisher stream has been created.
-  static VoidCallback onCreatePublisherStream;
+  static late VoidCallback onCreatePublisherStream;
 
 
   // Core Methods
@@ -157,10 +157,10 @@ class OTFlutter {
   ///
   static Widget createNativeView(
     int uid, {
-    OTPublisherKitSettings publisherSettings,
-    int width,
-    int height,
-    Function(int viewId) created,
+    required OTPublisherKitSettings publisherSettings,
+    required int width,
+    required int height,
+    required Function(int viewId) created,
   }) {
     Map<String, dynamic> creationParams = {};
 
@@ -304,7 +304,7 @@ class OpenTokConfiguration {
   /// of this instance. This is an immutable value.
   final String sessionId;
 
-  OpenTokConfiguration({this.token, this.apiKey, this.sessionId});
+  OpenTokConfiguration({required this.token, required this.apiKey, required this.sessionId});
 
   factory OpenTokConfiguration.fromJson(Map<String, dynamic> json) =>
       _$OpenTokConfigurationFromJson(json);
@@ -355,12 +355,12 @@ const int OpenTokAudioBitrateDefault = 400000;
 @JsonSerializable()
 class OTPublisherKitSettings {
   const OTPublisherKitSettings({
-    this.name,
-    this.audioTrack,
-    this.videoTrack,
-    this.audioBitrate,
-    this.cameraResolution,
-    this.cameraFrameRate,
+    required this.name,
+    required this.audioTrack,
+    required this.videoTrack,
+    required this.audioBitrate,
+    required this.cameraResolution,
+    required this.cameraFrameRate,
   });
 
   /// The name of the publisher video. The <[OTStream name]> property
