@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 
 class VideoSession {
-  int uid;
-  Widget view;
-  int viewId;
+  final int uid;
+  final Widget view;
+  // int viewId;
 
-  VideoSession(int uid, Widget view) {
-    this.uid = uid;
-    this.view = view;
-  }
+  VideoSession({required this.uid, required this.view});
 }

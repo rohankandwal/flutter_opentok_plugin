@@ -3,10 +3,12 @@ import 'package:flutter_opentok/flutter_opentok.dart';
 import 'package:flutter_opentok_example/video_session.dart';
 import 'package:flutter_opentok_example/settings.dart';
 
-void main() => runApp(MainApp());
+void main() => runApp(MainApp(
+      key: UniqueKey(),
+    ));
 
 class MainApp extends StatelessWidget {
-  const MainApp({Key key}) : super(key: key);
+  const MainApp({required Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +24,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  static final _sessions = List<VideoSession>();
+  static final _sessions = List<VideoSession>.empty(growable: true);
   final _infoStrings = <String>[];
   bool muted = false;
   bool publishVideo = true;
-  OTFlutter controller;
-  OpenTokConfiguration openTokConfiguration;
+  late OTFlutter? controller;
+  late OpenTokConfiguration? openTokConfiguration;
 
   @override
   void initState() {
@@ -134,10 +136,10 @@ class _MyAppState extends State<MyApp> {
   Widget _viewRows() {
     List<Widget> views = _getRenderViews();
     if (views.isNotEmpty) {
-      return Container (
+      return Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        /*child: Expanded*/child: views[0],
+        /*child: Expanded*/ child: views[0],
       );
     }
 
@@ -158,7 +160,7 @@ class _MyAppState extends State<MyApp> {
                   itemCount: _infoStrings.length,
                   itemBuilder: (BuildContext context, int index) {
                     if (_infoStrings.length == 0) {
-                      return null;
+                      return Container();
                     }
                     return Padding(
                         padding:
@@ -197,14 +199,19 @@ class _MyAppState extends State<MyApp> {
       cameraResolution: OTCameraCaptureResolution.OTCameraCaptureResolutionHigh,
       cameraFrameRate: OTCameraCaptureFrameRate.OTCameraCaptureFrameRate30FPS,
     );
-    Widget view = OTFlutter.createNativeView(uid,
-        publisherSettings: publisherSettings, created: (viewId) async {
-      controller = await OTFlutter.init(viewId);
+    Widget view = OTFlutter.createNativeView(
+      uid,
+      publisherSettings: publisherSettings,
+      created: (viewId) async {
+        controller = await OTFlutter.init(viewId);
 
-      await controller.create(openTokConfiguration);
-    });
+        await controller?.create(openTokConfiguration!);
+      },
+      height: 220,
+      width: 220,
+    );
 
-    VideoSession session = VideoSession(uid, view);
+    VideoSession session = VideoSession(uid: uid, view: view);
     _sessions.add(session);
   }
 
